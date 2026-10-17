@@ -28,7 +28,9 @@ let cached: { token: string; exp: number } | null = null;
 async function getAccessToken(): Promise<string> {
   if (cached && cached.exp - 60 > Date.now() / 1000) return cached.token;
 
-  const { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, STRAVA_REFRESH_TOKEN } = process.env;
+  const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID?.trim();
+  const STRAVA_CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET?.trim();
+  const STRAVA_REFRESH_TOKEN = process.env.STRAVA_REFRESH_TOKEN?.trim();
   if (!STRAVA_CLIENT_ID || !STRAVA_CLIENT_SECRET || !STRAVA_REFRESH_TOKEN) {
     throw new StravaError(
       "Faltan las variables de entorno de Strava en Vercel (STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET y STRAVA_REFRESH_TOKEN)."

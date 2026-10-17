@@ -15,8 +15,8 @@ code{display:block;word-break:break-all;background:#eef7e6;padding:12px;border-r
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const id = process.env.STRAVA_CLIENT_ID;
-  const secret = process.env.STRAVA_CLIENT_SECRET;
+  const id = process.env.STRAVA_CLIENT_ID?.trim();
+  const secret = process.env.STRAVA_CLIENT_SECRET?.trim();
 
   if (!id || !secret) {
     return page("<h2>Falta configurar</h2><p>Agrega STRAVA_CLIENT_ID y STRAVA_CLIENT_SECRET en Vercel (Settings → Environment Variables), vuelve a desplegar y abre esta página otra vez.</p>", 500);
@@ -43,7 +43,11 @@ export async function GET(req: Request) {
   });
 
   if (!res.ok) {
-    return page(`<h2>No funcionó</h2><p>Strava respondió con error ${res.status}. El código dura poco y solo sirve una vez: vuelve a <a href="${redirect}">empezar</a>.</p>`, 400);
+    const detail =
+      res.status === 401
+        ? "Strava no reconoce el ID o el secreto de cliente guardados en Vercel. Revisa que STRAVA_CLIENT_ID sea solo el número y que STRAVA_CLIENT_SECRET esté copiado completo, sin espacios, tal como aparece en strava.com/settings/api. Luego haz Redeploy."
+        : `Strava respondió con error ${res.status}. El código dura poco y solo sirve una vez: vuelve a <a href="${redirect}">empezar</a>.`;
+    return page(`<h2>No funcionó</h2><p>${detail}</p>`, 400);
   }
 
   const json = await res.json();
