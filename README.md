@@ -56,3 +56,15 @@ Formato de una sesión:
 - **Plan**: tus próximos entrenamientos (toca uno para ver el detalle) y, si quieres, las sesiones pasadas comparadas con lo que corriste.
 - **Progreso**: kilómetros por semana (4, 12 o 24 semanas; toca una barra para ver sus salidas), tendencia de ritmo (30, 90 o 180 días), tiempos esperados y mejores marcas.
 - **Tenis**: los 3 usados más recientemente, con opción de ver todos.
+
+## La mascota
+Tu personaje aparece arriba en Inicio, con un globo de texto, y cambia según tus datos (en este orden):
+1. **Celebra** si ya corriste hoy.
+2. **Duerme** si hoy no hay entrenamiento en el plan pero sí hay uno próximo (día de descanso).
+3. **Se ve cansado** si ayer corriste 15 km o más, o si la semana ya va en el 90 % de tu meta semanal.
+4. **Reposo** en cualquier otro caso (con el entrenamiento de hoy o el siguiente en el globo).
+
+Al tocarlo **salta**, y mientras se actualizan los datos **corre**. Si tu iPhone tiene activado "Reducir movimiento", se queda quieto.
+
+- Las animaciones están en `public/mascota/` (una tira de 8 cuadros por animación) y sus duraciones en `lib/mascotAnims.ts`.
+- Las reglas y los textos están en la función `decide` de `components/Mascot.tsx`.

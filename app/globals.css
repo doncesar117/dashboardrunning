@@ -660,3 +660,91 @@ button {
     animation-duration: 2.4s;
   }
 }
+
+/* ---------- mascota ---------- */
+
+.card.mascot {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 14px 14px 16px 10px;
+  overflow: hidden;
+}
+.sprite-btn {
+  position: relative;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sprite {
+  display: block;
+  background-repeat: no-repeat;
+}
+.ground {
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 74px;
+  height: 9px;
+  margin-left: -37px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 14%, transparent);
+}
+.bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  align-self: center;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+}
+.bubble::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  transform: rotate(45deg);
+}
+.bubble p {
+  position: relative;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.bubble p.fade {
+  animation: bubbleIn 0.3s ease both;
+}
+.bubble small {
+  position: relative;
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bubble p.fade {
+    animation: none;
+  }
+}

@@ -25,6 +25,7 @@ import {
 import { PaceChart, WeeklyChart } from "./Charts";
 import { Chevron, Collapsible, Expandable } from "./Expandable";
 import { IconHome, IconPlan, IconProgress, IconRefresh, IconShoe } from "./Icons";
+import { Mascot } from "./Mascot";
 import { Ring } from "./Ring";
 import { Segmented } from "./Segmented";
 import { useCountUp } from "./useCountUp";
@@ -131,7 +132,7 @@ function RunRow({ run, shoeName }: { run: Activity; shoeName?: string }) {
 
 /* ---------- Inicio ---------- */
 
-type Ctx = DashboardProps & { goTo: (t: TabId) => void };
+type Ctx = DashboardProps & { goTo: (t: TabId) => void; busy: boolean };
 
 function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Activity[] }) {
   const days = goal.date ? daysBetween(today, goal.date) : -1;
@@ -173,7 +174,7 @@ function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Acti
   );
 }
 
-function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo }: Ctx) {
+function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy }: Ctx) {
   const sum = summary(runs, today);
   const upcoming = sessions.filter((s) => s.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const next = upcoming[0];
@@ -194,6 +195,8 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo }: Ctx) 
 
   return (
     <>
+      <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} busy={busy} />
+
       <section className="card hero">
         <Ring value={sum.weekKm} goal={config.weeklyGoalKm} />
         <div className="stats">
@@ -706,7 +709,7 @@ export function Dashboard(props: DashboardProps) {
     setTimeout(() => setCooling(false), 15000);
   };
 
-  const ctx: Ctx = { ...props, goTo };
+  const ctx: Ctx = { ...props, goTo, busy: pending };
   const current = TABS.find((t) => t.id === tab) ?? TABS[0];
   const panels: Record<TabId, ReactNode> = {
     inicio: <InicioPanel {...ctx} />,
