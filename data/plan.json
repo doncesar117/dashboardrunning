@@ -5,5 +5,36 @@
     "distance_km": 21.0975,
     "target_time": "1:59:59"
   },
-  "sessions": []
+  "sessions": [
+    {
+      "date": "2026-10-18",
+      "type": "Tirada larga",
+      "title": "Larga 8 km",
+      "distance_km": 8,
+      "pace_target": "7:30",
+      "expected_time": "1:00:00",
+      "shoe": "ASICS Nimbus 27",
+      "notes": "Ritmo fácil de 7:15 a 7:45/km (58:00 a 1:02:00). Los primeros 2 km claramente lentos y sin acelerar al final. Si el pie y los isquios van bien, puedes subir a 9-10 km al mismo ritmo, no más."
+    },
+    {
+      "date": "2026-10-20",
+      "type": "Rodaje",
+      "title": "Rodaje suave 5 km",
+      "distance_km": 5,
+      "pace_target": "7:30",
+      "expected_time": "0:37:30",
+      "shoe": "Adidas Evo SL",
+      "notes": "Ritmo fácil de 7:15 a 7:45/km; debes poder hablar en frases completas. Si sientes molestia en el empeine, cambia al Nimbus."
+    },
+    {
+      "date": "2026-10-22",
+      "type": "Rodaje + progresiones",
+      "title": "Rodaje suave 5 km + 4×20\" progresiones",
+      "distance_km": 5,
+      "pace_target": "7:30",
+      "expected_time": "0:37:30",
+      "shoe": "Adidas Evo SL",
+      "notes": "Progresiones suaves de unos 20 s hasta ritmo de 5K, caminando 40 s entre cada una; suman cerca de 2 min al tiempo."
+    }
+  ]
 }
