@@ -217,9 +217,6 @@ body {
   margin-top: 6px;
 }
 
-.shoe + .shoe {
-  margin-top: 14px;
-}
 .shoe .head {
   display: flex;
   justify-content: space-between;
@@ -296,26 +293,370 @@ nav.tabs {
   transform: translateX(-50%);
   bottom: calc(12px + env(safe-area-inset-bottom));
   display: flex;
-  gap: 4px;
+  gap: 2px;
   padding: 6px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--card) 88%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
+  z-index: 10;
 }
-nav.tabs a {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 9px 14px;
+nav.tabs button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 68px;
+  padding: 8px 10px 6px;
+  border: 0;
   border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
-nav.tabs a:active {
-  background: var(--accent-soft);
+nav.tabs button.on {
+  background: var(--accent);
+  color: #0b2208;
 }
 
 section {
   scroll-margin-top: 12px;
+}
+
+/* ---------- interacción ---------- */
+
+button {
+  font: inherit;
+  color: inherit;
+}
+.tap {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease;
+}
+.tap:active {
+  transform: scale(0.97);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: panelIn 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--card);
+  cursor: pointer;
+}
+.icon-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.icon-btn.spin svg {
+  animation: spin 0.9s linear infinite;
+}
+
+.chd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.chd h2 {
+  margin: 0;
+}
+
+.pill {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0b2208;
+}
+
+.seg {
+  flex: none;
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+.seg button {
+  border: 0;
+  background: none;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.seg button.on {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+}
+
+/* contenido que se despliega */
+.xp {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+.xp.open {
+  grid-template-rows: 1fr;
+}
+.xp-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.chev {
+  flex: none;
+  color: var(--muted);
+  transition: transform 0.25s ease;
+}
+.open > .xhead .chev,
+.open > .chead .chev {
+  transform: rotate(180deg);
+}
+
+/* filas expandibles (salidas y sesiones) */
+.item.xrow {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+.xhead {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.xhead .chev {
+  margin-top: 2px;
+}
+.xbody {
+  padding: 0 12px 12px 76px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.xbody .notes {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+/* tarjetas colapsables */
+.chead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.ctitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.csum {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.cbody {
+  padding-top: 14px;
+}
+
+.more {
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hint {
+  margin: 0 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.nx-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.badge.soft {
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  color: var(--muted);
+}
+
+/* tira de la semana */
+.wk {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.wk button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.wk .dot {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: #0b2208;
+  transition: transform 0.15s ease;
+}
+.wk .dot.ran {
+  background: var(--accent);
+}
+.wk button:active .dot {
+  transform: scale(0.9);
+}
+.wk .today .dot {
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent);
+}
+.wk .sel small {
+  color: var(--text);
+  font-weight: 800;
+}
+.wk small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.wk-detail {
+  margin: 10px 0 0;
+  font-size: 13px;
+  min-height: 18px;
+}
+
+/* detalle de semana y listas mini */
+.weekdetail {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+.wd-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.wd-head span {
+  color: var(--muted);
+}
+.mini {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+.mini span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mini span:last-child {
+  flex: none;
+  color: var(--muted);
+}
+.sumline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.sumline b {
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+  .xp,
+  .chev,
+  .tap,
+  .wk .dot,
+  nav.tabs button,
+  .seg button {
+    transition: none;
+  }
+  .icon-btn.spin svg {
+    animation-duration: 2.4s;
+  }
 }

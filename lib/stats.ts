@@ -53,10 +53,13 @@ export function mondayOf(iso: string): string {
 
 export const dateOf = (a: Activity) => a.start_date_local.slice(0, 10);
 
+// Formato manual (no Intl) para que servidor y navegador escriban exactamente lo mismo.
+const WEEKDAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
 export function fmtDateShort(iso: string): string {
-  return new Intl.DateTimeFormat("es-MX", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })
-    .format(new Date(`${iso}T00:00:00Z`))
-    .replace(".", "");
+  const d = new Date(`${iso}T00:00:00Z`);
+  return `${WEEKDAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 }
 
 /* ---------- estadísticas ---------- */
@@ -100,8 +103,8 @@ export function summary(runs: Activity[], today: string) {
   };
 }
 
-export function paceSeries(runs: Activity[], today: string) {
-  const since = addDays(today, -89);
+export function paceSeries(runs: Activity[], today: string, days = 90) {
+  const since = addDays(today, -(days - 1));
   return runs
     .filter((r) => dateOf(r) >= since && r.distance >= 5000)
     .sort((a, b) => a.start_date_local.localeCompare(b.start_date_local))

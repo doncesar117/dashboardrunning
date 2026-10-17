@@ -49,4 +49,10 @@ Formato de una sesión:
 - **Tiempos esperados**: fórmula de Riegel (exponente 1.06) sobre tu mejor esfuerzo de 5 a 25 km en los últimos 90 días. Es una estimación propia, no un dato de Strava.
 - **Mejores marcas**: salidas completas cuya distancia cae cerca de 5K, 10K, 21K o 42K.
 - **Tenis**: kilometraje acumulado de Strava. Las salidas sin tenis asignado en Strava no suman a ningún par.
-- Los datos se refrescan cada vez que abres la app (con un respaldo de 15 minutos para no exceder el límite de Strava).
+- Los datos se refrescan cada vez que abres la app (con un respaldo de 15 minutos para no exceder el límite de Strava). El botón circular de arriba a la derecha pide datos nuevos al momento (queda en pausa 15 segundos después de usarlo).
+
+## Cómo está organizada la app
+- **Inicio**: anillo de la semana, siguiente entrenamiento, tira de días (toca un día para ver su salida), cuenta regresiva a tu carrera y últimas salidas.
+- **Plan**: tus próximos entrenamientos (toca uno para ver el detalle) y, si quieres, las sesiones pasadas comparadas con lo que corriste.
+- **Progreso**: kilómetros por semana (4, 12 o 24 semanas; toca una barra para ver sus salidas), tendencia de ritmo (30, 90 o 180 días), tiempos esperados y mejores marcas.
+- **Tenis**: los 3 usados más recientemente, con opción de ver todos.

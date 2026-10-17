@@ -64,7 +64,7 @@ async function stravaGet<T>(path: string): Promise<T> {
   const token = await getAccessToken();
   const res = await fetch(`${API}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
-    next: { revalidate: 900 },
+    next: { revalidate: 900, tags: ["strava"] },
   });
   if (res.status === 401) {
     throw new StravaError(
