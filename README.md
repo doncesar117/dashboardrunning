@@ -57,6 +57,8 @@ Formato de una sesión:
 - **Progreso**: kilómetros por semana (4, 12 o 24 semanas; toca una barra para ver sus salidas), tendencia de ritmo (30, 90 o 180 días), tiempos esperados y mejores marcas.
 - **Tenis**: los 3 usados más recientemente, con opción de ver todos.
 
+En tablet y escritorio la app se acomoda en dos columnas (Inicio y Progreso) y se centra con un ancho máximo.
+
 ## La mascota
 Tu personaje aparece arriba en Inicio, con un globo de texto, y cambia según tus datos (en este orden):
 1. **Celebra** si ya corriste hoy.
@@ -68,3 +70,11 @@ Al tocarlo **salta**, y mientras se actualizan los datos **corre**. Si tu iPhone
 
 - Las animaciones están en `public/mascota/` (una tira de 8 cuadros por animación) y sus duraciones en `lib/mascotAnims.ts`.
 - Las reglas y los textos están en la función `decide` de `components/Mascot.tsx`.
+
+## Corriendo ahora
+En la tarjeta del personaje hay un botón discreto **▶ Voy a correr**. Al tocarlo:
+- El personaje corre y el globo dice **Corriendo · 32 min** (el tiempo avanza solo). En las demás pestañas queda un puntito verde con el tiempo debajo del título.
+- **Terminé** lo apaga y el personaje celebra unos segundos.
+- Se apaga solo cuando tu salida llega a Strava (si empezó después de tocar el botón, con 10 minutos de margen) o a las 4 horas.
+
+El estado se guarda en el navegador de ese dispositivo (no se comparte entre tu iPhone y otras pantallas). No usa la API de Garmin: es un aviso manual.

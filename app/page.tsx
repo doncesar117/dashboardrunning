@@ -22,6 +22,7 @@ export default async function Home() {
       moving_time: a.moving_time,
       elapsed_time: a.elapsed_time,
       total_elevation_gain: a.total_elevation_gain,
+      start_date: a.start_date,
       start_date_local: a.start_date_local,
       average_heartrate: a.average_heartrate,
       gear_id: a.gear_id,

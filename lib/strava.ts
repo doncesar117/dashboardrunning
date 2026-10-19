@@ -10,6 +10,7 @@ export type Activity = {
   moving_time: number; // segundos
   elapsed_time: number;
   total_elevation_gain: number;
+  start_date?: string; // UTC (ISO)
   start_date_local: string;
   average_heartrate?: number;
   gear_id: string | null;

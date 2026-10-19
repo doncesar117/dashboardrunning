@@ -748,3 +748,116 @@ button {
     animation: none;
   }
 }
+
+/* ---------- corriendo ahora ---------- */
+
+.live {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  min-height: 28px;
+}
+.live small {
+  margin: 0;
+}
+.live-now {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+.live-now i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);
+  animation: livePulse 1.6s ease-out infinite;
+}
+@keyframes livePulse {
+  to {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+.ghost {
+  flex: none;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.ghost:hover,
+.ghost:focus-visible {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
+.ghost:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-now i {
+    animation: none;
+  }
+  .ghost {
+    transition: none;
+  }
+}
+
+/* ---------- pantallas grandes (tablet y escritorio) ---------- */
+
+@media (min-width: 820px) {
+  .wrap {
+    max-width: 1000px;
+    padding: 24px 28px calc(104px + env(safe-area-inset-bottom));
+    gap: 18px;
+  }
+  .top h1 {
+    font-size: 34px;
+  }
+  .panel {
+    gap: 16px;
+  }
+  .panel.p-inicio,
+  .panel.p-progreso {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .panel.p-inicio > .mascot,
+  .panel.p-inicio > .last,
+  .panel.p-progreso > :nth-child(n + 3) {
+    grid-column: 1 / -1;
+  }
+  .panel.p-plan,
+  .panel.p-tenis {
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .card.mascot {
+    padding: 18px 24px 20px 18px;
+  }
+  .bubble {
+    max-width: 560px;
+  }
+  nav.tabs button {
+    min-width: 84px;
+  }
+}
+@media (min-width: 1200px) {
+  .wrap {
+    max-width: 1120px;
+  }
+}

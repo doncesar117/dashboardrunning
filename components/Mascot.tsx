@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Activity } from "@/lib/strava";
 import { ANIMS, FRAME_H, FRAME_W, type AnimName } from "@/lib/mascotAnims";
 import { addDays, dateOf, daysBetween, km, mondayOf } from "@/lib/stats";
+import { fmtElapsed, type RunningNow } from "@/lib/useRunning";
 
 type Session = { date: string; title?: string; type?: string };
 
@@ -108,12 +109,14 @@ export function Mascot({
   sessions,
   weeklyGoalKm,
   busy,
+  running,
 }: {
   today: string;
   runs: Activity[];
   sessions: Session[];
   weeklyGoalKm: number;
   busy: boolean;
+  running: RunningNow;
 }) {
   const base = decide(today, runs, sessions, weeklyGoalKm);
   const [jumping, setJumping] = useState(false);
@@ -128,10 +131,19 @@ export function Mascot({
     });
   }, []);
 
-  const anim: AnimName = busy ? "correr" : jumping ? "saltar" : base.state;
-  const text = busy ? "Buscando tus datos en Strava…" : jumping ? "¡Vamos!" : base.message;
+  const live = running.startedAt !== null;
+  const anim: AnimName = live ? "correr" : running.justFinished ? "celebrar" : busy ? "correr" : jumping ? "saltar" : base.state;
+  const text = live
+    ? "¡A darle! Aquí te espero."
+    : running.justFinished
+      ? "¡Buen trabajo! Tu salida aparecerá cuando Strava la reciba."
+      : busy
+        ? "Buscando tus datos en Strava…"
+        : jumping
+          ? "¡Vamos!"
+          : base.message;
   const onTap = () => {
-    if (reduce || busy || jumping) return;
+    if (reduce || busy || jumping || live || running.justFinished) return;
     setJumping(true);
   };
 
@@ -145,7 +157,23 @@ export function Mascot({
         <p key={text} className="fade">
           {text}
         </p>
-        <small>Toca a tu personaje</small>
+        {live ? (
+          <div className="live">
+            <span className="live-now" role="status">
+              <i aria-hidden="true" /> Corriendo · {fmtElapsed(running.minutes)}
+            </span>
+            <button type="button" className="ghost tap" onClick={running.stop}>
+              Terminé
+            </button>
+          </div>
+        ) : (
+          <div className="live">
+            <small>Toca a tu personaje</small>
+            <button type="button" className="ghost tap" onClick={running.start} disabled={busy}>
+              ▶ Voy a correr
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

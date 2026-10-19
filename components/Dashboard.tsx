@@ -27,6 +27,7 @@ import { Chevron, Collapsible, Expandable } from "./Expandable";
 import { IconHome, IconPlan, IconProgress, IconRefresh, IconShoe } from "./Icons";
 import { Mascot } from "./Mascot";
 import { Ring } from "./Ring";
+import { fmtElapsed, useRunning, type RunningNow } from "@/lib/useRunning";
 import { Segmented } from "./Segmented";
 import { useCountUp } from "./useCountUp";
 
@@ -132,7 +133,7 @@ function RunRow({ run, shoeName }: { run: Activity; shoeName?: string }) {
 
 /* ---------- Inicio ---------- */
 
-type Ctx = DashboardProps & { goTo: (t: TabId) => void; busy: boolean };
+type Ctx = DashboardProps & { goTo: (t: TabId) => void; busy: boolean; running: RunningNow };
 
 function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Activity[] }) {
   const days = goal.date ? daysBetween(today, goal.date) : -1;
@@ -174,7 +175,7 @@ function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Acti
   );
 }
 
-function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy }: Ctx) {
+function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, running }: Ctx) {
   const sum = summary(runs, today);
   const upcoming = sessions.filter((s) => s.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const next = upcoming[0];
@@ -195,7 +196,7 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy }:
 
   return (
     <>
-      <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} busy={busy} />
+      <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} busy={busy} running={running} />
 
       <section className="card hero">
         <Ring value={sum.weekKm} goal={config.weeklyGoalKm} />
@@ -273,7 +274,7 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy }:
 
       {goal && <GoalCard goal={goal} today={today} runs={runs} />}
 
-      <section className="card">
+      <section className="card last">
         <h2>Últimas salidas</h2>
         {recent.length === 0 ? (
           <p className="muted" style={{ margin: 0, fontSize: 14 }}>
@@ -683,6 +684,7 @@ export function Dashboard(props: DashboardProps) {
   const [tab, setTab] = useState<TabId>("inicio");
   const [pending, startTransition] = useTransition();
   const [cooling, setCooling] = useState(false);
+  const running = useRunning(props.runs);
 
   useEffect(() => {
     const h = window.location.hash.slice(1);
@@ -709,7 +711,7 @@ export function Dashboard(props: DashboardProps) {
     setTimeout(() => setCooling(false), 15000);
   };
 
-  const ctx: Ctx = { ...props, goTo, busy: pending };
+  const ctx: Ctx = { ...props, goTo, busy: pending, running };
   const current = TABS.find((t) => t.id === tab) ?? TABS[0];
   const panels: Record<TabId, ReactNode> = {
     inicio: <InicioPanel {...ctx} />,
@@ -724,14 +726,24 @@ export function Dashboard(props: DashboardProps) {
         <header className="top">
           <div>
             <h1>{current.title}</h1>
-            <small>{pending ? "Actualizando…" : `Actualizado ${props.updated}`}</small>
+            <small>
+              {running.startedAt ? (
+                <span className="live-now">
+                  <i aria-hidden="true" /> Corriendo · {fmtElapsed(running.minutes)}
+                </span>
+              ) : pending ? (
+                "Actualizando…"
+              ) : (
+                `Actualizado ${props.updated}`
+              )}
+            </small>
           </div>
           <button type="button" className={`icon-btn tap ${pending ? "spin" : ""}`} onClick={onRefresh} disabled={pending || cooling} aria-label="Actualizar datos de Strava">
             <IconRefresh />
           </button>
         </header>
 
-        <div className="panel" key={tab}>
+        <div className={`panel p-${tab}`} key={tab}>
           {panels[tab]}
         </div>
       </main>
