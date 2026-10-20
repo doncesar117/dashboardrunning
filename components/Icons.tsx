@@ -42,3 +42,9 @@ export const IconRefresh = () => (
     <path d="M20 4v7h-7" />
   </svg>
 );
+
+export const IconPlay = () => (
+  <svg {...base} width={20} height={20} fill="currentColor" stroke="none">
+    <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
+  </svg>
+);

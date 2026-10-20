@@ -45,6 +45,25 @@ Formato de una sesión:
 }
 ```
 
+### Sesiones de fuerza con video
+Una sesión cuyo `type` (o `title`) diga fuerza, core, gym, pesas, movilidad, etc. se trata como fuerza: sin km, ritmo ni tenis, y sin la marca "Sin registro". Ejemplo:
+
+```json
+{
+  "date": "2026-10-21",
+  "type": "Fuerza",
+  "title": "Fuerza de piernas y glúteos",
+  "duration_min": 25,
+  "url": "https://www.youtube.com/watch?v=XXXX",
+  "notes": "3 series de 12 repeticiones"
+}
+```
+
+- Con **un** video, tocar la sesión en el Plan abre YouTube directamente (pestaña nueva o la app de YouTube). En Inicio, "Siguiente entrenamiento" muestra el botón **▶ Ver video**.
+- Con **varios** videos, usa `"videos": [{ "title": "Core 10 min", "url": "https://..." }, "https://..."]`; la sesión se expande con un botón por video.
+- El enlace puede ir en `url`, `link`, `video` o `youtube`, o simplemente escrito dentro de `notes` (se convierte en botón). Solo se aceptan direcciones `http` o `https`.
+- `duration_min` es opcional y se muestra como "25 min".
+
 ## Cómo se calculan algunas cosas
 - **Tiempos esperados**: fórmula de Riegel (exponente 1.06) sobre tu mejor esfuerzo de 5 a 25 km en los últimos 90 días. Es una estimación propia, no un dato de Strava.
 - **Mejores marcas**: salidas completas cuya distancia cae cerca de 5K, 10K, 21K o 42K.

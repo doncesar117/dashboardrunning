@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Activity } from "@/lib/strava";
 import { ANIMS, FRAME_H, FRAME_W, type AnimName } from "@/lib/mascotAnims";
 import { addDays, dateOf, daysBetween, km, mondayOf } from "@/lib/stats";
+import { isStrength } from "@/lib/sessions";
 import { fmtElapsed, type RunningNow } from "@/lib/useRunning";
 
 type Session = { date: string; title?: string; type?: string };
@@ -94,7 +95,7 @@ function decide(today: string, runs: Activity[], sessions: Session[], weeklyGoal
   }
 
   // 4. Todo lo demás → en reposo, esperando para salir
-  if (todaySession) return { state: "idle", message: `Hoy toca: ${label(todaySession)}. ¿Salimos?` };
+  if (todaySession) return { state: "idle", message: `Hoy toca: ${label(todaySession)}. ${isStrength(todaySession) ? "¡A darle!" : "¿Salimos?"}` };
   if (next) return { state: "idle", message: `Siguiente: ${label(next)}, ${when(daysBetween(today, next.date))}.` };
   return { state: "idle", message: "Listo para salir cuando quieras." };
 }

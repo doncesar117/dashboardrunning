@@ -24,7 +24,8 @@ import {
 } from "@/lib/stats";
 import { PaceChart, WeeklyChart } from "./Charts";
 import { Chevron, Collapsible, Expandable } from "./Expandable";
-import { IconHome, IconPlan, IconProgress, IconRefresh, IconShoe } from "./Icons";
+import { IconHome, IconPlan, IconPlay, IconProgress, IconRefresh, IconShoe } from "./Icons";
+import { isStrength, linkLabel, notesText, sessionLinks, type LinkFields } from "@/lib/sessions";
 import { Mascot } from "./Mascot";
 import { Ring } from "./Ring";
 import { fmtElapsed, useRunning, type RunningNow } from "@/lib/useRunning";
@@ -33,15 +34,15 @@ import { useCountUp } from "./useCountUp";
 
 /* ---------- tipos ---------- */
 
-export type Session = {
+export type Session = LinkFields & {
   date: string;
+  duration_min?: number;
   type?: string;
   title?: string;
   distance_km?: number;
   pace_target?: string;
   expected_time?: string;
   shoe?: string;
-  notes?: string;
 };
 
 export type Goal = { name?: string; date?: string; distance_km?: number; target_time?: string };
@@ -84,7 +85,7 @@ const sameShoe = (a?: string, b?: string) => {
 };
 
 const sessionMeta = (s: Session) =>
-  [s.distance_km ? `${s.distance_km} km` : null, s.pace_target ? `${s.pace_target} /km` : null, s.expected_time ? `≈ ${s.expected_time}` : null]
+  [s.duration_min ? `${s.duration_min} min` : null, s.distance_km ? `${s.distance_km} km` : null, s.pace_target ? `${s.pace_target} /km` : null, s.expected_time ? `≈ ${s.expected_time}` : null]
     .filter(Boolean)
     .join(" · ");
 
@@ -222,7 +223,8 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
               {fmtDateShort(next.date)}
               {sessionMeta(next) ? ` · ${sessionMeta(next)}` : ""}
             </div>
-            {next.shoe && <div className="meta">👟 {next.shoe}</div>}
+            {next.shoe && !isStrength(next) && <div className="meta">👟 {next.shoe}</div>}
+            <VideoButtons links={sessionLinks(next)} className="vlinks main" />
             <button type="button" className="more tap" onClick={() => goTo("plan")}>
               Ver plan completo
             </button>
@@ -301,34 +303,71 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
 
 /* ---------- Plan ---------- */
 
+function VideoButtons({ links, className = "vlinks" }: { links: ReturnType<typeof sessionLinks>; className?: string }) {
+  if (links.length === 0) return null;
+  return (
+    <div className={className}>
+      {links.map((l) => (
+        <a key={l.url} className="vbtn tap" href={l.url} target="_blank" rel="noopener noreferrer">
+          <IconPlay /> {linkLabel(l)}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; open: boolean; onToggle: () => void; runs: Activity[]; shoes: Shoe[] | null; past: boolean }) {
-  const done = runs.filter((r) => dateOf(r) === s.date);
+  const strength = isStrength(s);
+  const links = sessionLinks(s);
+  const notes = notesText(s);
+  const direct = strength && links.length === 1; // un solo video: tocar la sesión abre YouTube
+  const done = strength ? [] : runs.filter((r) => dateOf(r) === s.date);
   const d = done.reduce((sum, r) => sum + km(r.distance), 0);
   const t = done.reduce((sum, r) => sum + r.moving_time, 0);
   const usedShoes = Array.from(new Set(done.map((r) => shoes?.find((x) => x.id === r.gear_id)?.name).filter((x): x is string => !!x)));
   const mismatch = !!s.shoe && usedShoes.length > 0 && !usedShoes.some((u) => sameShoe(u, s.shoe));
 
+  const head = (
+    <>
+      <div className="date">{fmtDateShort(s.date)}</div>
+      <div className="body">
+        <div className="title">{s.title ?? s.type ?? "Entrenamiento"}</div>
+        <div className="meta">{sessionMeta(s)}</div>
+        {direct && notes && <div className="meta clamp">{notes}</div>}
+        {done.length > 0 ? (
+          <span className="badge">
+            Hecho: {d.toFixed(1)} km · {fmtPace(t / d)} /km
+          </span>
+        ) : past && !strength ? (
+          <span className="badge soft">Sin registro</span>
+        ) : null}
+      </div>
+    </>
+  );
+
+  if (direct) {
+    return (
+      <div className="item xrow video">
+        <a className="xhead tap" href={links[0].url} target="_blank" rel="noopener noreferrer" aria-label={`${s.title ?? "Fuerza"}: abrir video en una pestaña nueva`}>
+          {head}
+          <span className="playchip" aria-hidden="true">
+            <IconPlay />
+          </span>
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div className={`item xrow ${open ? "open" : ""}`}>
       <button type="button" className="xhead tap" aria-expanded={open} onClick={onToggle}>
-        <div className="date">{fmtDateShort(s.date)}</div>
-        <div className="body">
-          <div className="title">{s.title ?? s.type ?? "Entrenamiento"}</div>
-          <div className="meta">{sessionMeta(s)}</div>
-          {done.length > 0 ? (
-            <span className="badge">
-              Hecho: {d.toFixed(1)} km · {fmtPace(t / d)} /km
-            </span>
-          ) : past ? (
-            <span className="badge soft">Sin registro</span>
-          ) : null}
-        </div>
+        {head}
         <Chevron />
       </button>
       <Expandable open={open}>
         <div className="xbody">
           {s.type && <div>Tipo: {s.type}</div>}
-          {s.shoe && <div>👟 Plan: {s.shoe}</div>}
+          {!strength && s.shoe && <div>👟 Plan: {s.shoe}</div>}
           {usedShoes.length > 0 && (
             <div>
               👟 Usaste: {usedShoes.join(", ")}
@@ -340,7 +379,8 @@ function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; ope
               Plan {s.distance_km} km → real {d.toFixed(1)} km
             </div>
           ) : null}
-          {s.notes && <div className="notes">{s.notes}</div>}
+          {notes && <div className="notes">{notes}</div>}
+          <VideoButtons links={links} />
         </div>
       </Expandable>
     </div>
