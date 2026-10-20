@@ -307,9 +307,9 @@ function VideoButtons({ links, className = "vlinks" }: { links: ReturnType<typeo
   if (links.length === 0) return null;
   return (
     <div className={className}>
-      {links.map((l) => (
+      {links.map((l, i) => (
         <a key={l.url} className="vbtn tap" href={l.url} target="_blank" rel="noopener noreferrer">
-          <IconPlay /> {linkLabel(l)}
+          <IconPlay /> {!l.title && links.length > 1 ? `Video ${i + 1}` : linkLabel(l)}
         </a>
       ))}
     </div>
