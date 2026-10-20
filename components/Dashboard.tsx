@@ -27,6 +27,8 @@ import { Chevron, Collapsible, Expandable } from "./Expandable";
 import { IconHome, IconPlan, IconPlay, IconProgress, IconRefresh, IconShoe } from "./Icons";
 import { isStrength, linkLabel, notesText, sessionLinks, type LinkFields } from "@/lib/sessions";
 import { Mascot } from "./Mascot";
+import { Notifications } from "./Notifications";
+import { StrengthDone } from "./StrengthDone";
 import { Ring } from "./Ring";
 import { fmtElapsed, useRunning, type RunningNow } from "@/lib/useRunning";
 import { Segmented } from "./Segmented";
@@ -55,6 +57,7 @@ export type DashboardProps = {
   config: { weeklyGoalKm: number; shoeLifeKm: number; shoeLifeOverrides: Record<string, number> };
   goal?: Goal;
   sessions: Session[];
+  push?: { publicKey: string } | null; // avisos activos (llaves y base de datos listas)
 };
 
 const TABS = [
@@ -176,7 +179,7 @@ function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Acti
   );
 }
 
-function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, running }: Ctx) {
+function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, running, push }: Ctx) {
   const sum = summary(runs, today);
   const upcoming = sessions.filter((s) => s.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const next = upcoming[0];
@@ -225,6 +228,7 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
             </div>
             {next.shoe && !isStrength(next) && <div className="meta">👟 {next.shoe}</div>}
             <VideoButtons links={sessionLinks(next)} className="vlinks main" />
+            {push && next.date === today && isStrength(next) && <StrengthDone />}
             <button type="button" className="more tap" onClick={() => goTo("plan")}>
               Ver plan completo
             </button>
@@ -778,9 +782,12 @@ export function Dashboard(props: DashboardProps) {
               )}
             </small>
           </div>
-          <button type="button" className={`icon-btn tap ${pending ? "spin" : ""}`} onClick={onRefresh} disabled={pending || cooling} aria-label="Actualizar datos de Strava">
-            <IconRefresh />
-          </button>
+          <div className="top-actions">
+            {props.push && <Notifications publicKey={props.push.publicKey} />}
+            <button type="button" className={`icon-btn tap ${pending ? "spin" : ""}`} onClick={onRefresh} disabled={pending || cooling} aria-label="Actualizar datos de Strava">
+              <IconRefresh />
+            </button>
+          </div>
         </header>
 
         <div className={`panel p-${tab}`} key={tab}>

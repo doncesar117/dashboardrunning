@@ -48,3 +48,10 @@ export const IconPlay = () => (
     <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
   </svg>
 );
+
+export const IconBell = () => (
+  <svg {...base} width={20} height={20}>
+    <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9z" />
+    <path d="M10 19a2 2 0 0 0 4 0" />
+  </svg>
+);

@@ -97,3 +97,22 @@ En la tarjeta del personaje hay un botón discreto **▶ Voy a correr**. Al toca
 - Se apaga solo cuando tu salida llega a Strava (si empezó después de tocar el botón, con 10 minutos de margen) o a las 4 horas.
 
 El estado se guarda en el navegador de ese dispositivo (no se comparte entre tu iPhone y otras pantallas). No usa la API de Garmin: es un aviso manual.
+
+## Avisos en el teléfono (opcional)
+La app puede mandarte una notificación:
+- **5:30 AM**: si el plan de hoy es de correr y todavía no hay salida de hoy en Strava (incluye el tenis del plan).
+- **6:00 PM**: si hoy toca fuerza y no tocaste **Ya la hice** (botón en "Siguiente entrenamiento"). Si la sesión tiene video, al tocar el aviso se abre YouTube.
+
+Cómo funciona: la campana 🔔 de arriba activa los avisos en ese dispositivo; un servicio de tareas programadas llama a `/api/notify` a las 5:30 y a las 18:00. En iPhone hace falta iOS 16.4 o más nuevo y abrir la app desde la pantalla de inicio.
+
+Configuración (una sola vez):
+1. En Vercel, **Storage**: crea una base **Upstash Redis** (plan gratis) y conéctala al proyecto. Agrega solas las variables `KV_REST_API_URL` y `KV_REST_API_TOKEN`.
+2. En **Environment Variables** agrega `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` (par de llaves de los avisos) y `CRON_SECRET` (una contraseña larga inventada). Opcional: `VAPID_SUBJECT` (por ejemplo `mailto:tu@correo.com`). Vuelve a desplegar.
+3. En un servicio de tareas programadas gratis (por ejemplo cron-job.org) crea dos tareas, con zona horaria **America/Mexico_City**:
+   - 5:30 todos los días → `https://TU-DOMINIO/api/notify?slot=am`
+   - 18:00 todos los días → `https://TU-DOMINIO/api/notify?slot=pm`
+   En cada una agrega el encabezado `Authorization: Bearer TU_CRON_SECRET` (o, más simple, añade `&key=TU_CRON_SECRET` a la dirección).
+4. En el iPhone abre la app desde la pantalla de inicio, toca la campana y acepta.
+5. Prueba: abre `https://TU-DOMINIO/api/notify?test=1&key=TU_CRON_SECRET` y debe llegar un aviso. Con `&dry=1&slot=am` (o `pm`) ves qué enviaría sin mandar nada.
+
+Mientras falte alguna de estas piezas, la campana y el botón no aparecen y todo lo demás funciona igual.
