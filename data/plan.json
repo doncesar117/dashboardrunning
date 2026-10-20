@@ -27,6 +27,13 @@
       "notes": "Ritmo fácil de 7:15 a 7:45/km; debes poder hablar en frases completas. Si sientes molestia en el empeine, cambia al Nimbus."
     },
     {
+      "date": "2026-10-21",
+      "type": "Fuerza",
+      "title": "Fuerza: piernas, rodillas e isquios",
+      "expected_time": "0:20:00",
+      "notes": "Video: Caroline Girvan, piernas amigable con rodillas con mancuernas (~20 min) https://www.youtube.com/watch?v=qdYGi4XsoE8. 2×10 con peso ligero-moderado, sin llegar al fallo; si hay molestia en isquios, baja la carga."
+    },
+    {
       "date": "2026-10-22",
       "type": "Rodaje + progresiones",
       "title": "Rodaje suave 5 km + 4×20\" progresiones",
@@ -35,6 +42,13 @@
       "expected_time": "0:37:30",
       "shoe": "Adidas Evo SL",
       "notes": "Progresiones suaves de unos 20 s hasta ritmo de 5K, caminando 40 s entre cada una; suman cerca de 2 min al tiempo."
+    },
+    {
+      "date": "2026-10-23",
+      "type": "Fuerza",
+      "title": "Fuerza ligera: isquios con banda",
+      "expected_time": "0:27:00",
+      "notes": "Video: Total Body Training, isquios con banda (~15 min) https://www.youtube.com/watch?v=TfX_q6KK97Q. Opcional al final, rodillas (OptimaSport) https://www.youtube.com/watch?v=9vxCk6awnMw. 2×10, sin llegar al fallo."
     }
   ]
 }
