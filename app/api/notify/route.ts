@@ -4,7 +4,7 @@ import plan from "@/data/plan.json";
 import { decideReminder, type Slot } from "@/lib/notify";
 import { allSubs, dropSub, getStrengthDone, storeReady } from "@/lib/store";
 import { getRecentActivities } from "@/lib/strava";
-import { isRun, todayLocal } from "@/lib/stats";
+import { dateOf, isRun, isStrengthActivity, todayLocal } from "@/lib/stats";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,7 +42,16 @@ export async function GET(req: Request) {
     }
     reminder = decideReminder("am", today, plan.sessions, runs, false);
   } else {
-    reminder = decideReminder("pm", today, plan.sessions, [], await getStrengthDone(today));
+    // Ya hecha si la marcaste con el botón o si hay una fuerza de hoy en Strava.
+    let done = await getStrengthDone(today);
+    if (!done) {
+      try {
+        done = (await getRecentActivities(3)).some((a) => isStrengthActivity(a) && dateOf(a) === today);
+      } catch {
+        /* si Strava falla, se confía solo en el botón */
+      }
+    }
+    reminder = decideReminder("pm", today, plan.sessions, [], done);
   }
 
   if (!reminder) return NextResponse.json({ sent: 0, reason: "Nada que avisar", today, slot });

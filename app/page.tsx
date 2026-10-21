@@ -2,7 +2,7 @@ import { Dashboard, type Goal, type Session } from "@/components/Dashboard";
 import config from "@/data/config.json";
 import plan from "@/data/plan.json";
 import { getRecentActivities, getShoes, StravaError, type Activity, type Shoe } from "@/lib/strava";
-import { isRun, todayLocal } from "@/lib/stats";
+import { isRun, isStrengthActivity, todayLocal } from "@/lib/stats";
 import { storeReady } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
@@ -11,11 +11,12 @@ export default async function Home() {
   const today = todayLocal();
 
   let runs: Activity[];
+  let strengths: Activity[];
   let shoes: Shoe[] | null;
   try {
     const [activities, shoeList] = await Promise.all([getRecentActivities(180), getShoes()]);
     // Solo mandamos al navegador los campos que la app usa.
-    runs = activities.filter(isRun).map((a) => ({
+    const slim = (a: Activity): Activity => ({
       id: a.id,
       name: a.name,
       sport_type: a.sport_type,
@@ -27,7 +28,9 @@ export default async function Home() {
       start_date_local: a.start_date_local,
       average_heartrate: a.average_heartrate,
       gear_id: a.gear_id,
-    }));
+    });
+    runs = activities.filter(isRun).map(slim);
+    strengths = activities.filter(isStrengthActivity).map(slim);
     shoes = shoeList
       ? shoeList.map((s) => ({ id: s.id, name: s.name, distance: s.distance, retired: s.retired, primary: s.primary }))
       : null;
@@ -61,6 +64,7 @@ export default async function Home() {
       today={today}
       updated={updated}
       runs={runs}
+      strengths={strengths}
       shoes={shoes}
       config={config}
       goal={plan.goal as Goal | undefined}

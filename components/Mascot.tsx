@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Activity } from "@/lib/strava";
 import { ANIMS, FRAME_H, FRAME_W, type AnimName } from "@/lib/mascotAnims";
-import { addDays, dateOf, daysBetween, km, mondayOf } from "@/lib/stats";
+import { addDays, dateOf, daysBetween, km, mondayOf, strengthMinutes } from "@/lib/stats";
 import { isStrength } from "@/lib/sessions";
 import { fmtElapsed, type RunningNow } from "@/lib/useRunning";
 
@@ -72,7 +72,7 @@ type State = "idle" | "celebrar" | "dormir" | "cansado";
 const sumKm = (rs: Activity[]) => rs.reduce((s, r) => s + km(r.distance), 0);
 const when = (n: number) => (n === 1 ? "mañana" : `en ${n} días`);
 
-function decide(today: string, runs: Activity[], sessions: Session[], weeklyGoalKm: number): { state: State; message: string } {
+function decide(today: string, runs: Activity[], strengths: Activity[], sessions: Session[], weeklyGoalKm: number): { state: State; message: string } {
   const todayKm = sumKm(runs.filter((r) => dateOf(r) === today));
   const weekKm = sumKm(runs.filter((r) => dateOf(r) >= mondayOf(today) && dateOf(r) <= today));
   const yesterdayKm = sumKm(runs.filter((r) => dateOf(r) === addDays(today, -1)));
@@ -82,6 +82,10 @@ function decide(today: string, runs: Activity[], sessions: Session[], weeklyGoal
 
   // 1. Ya corriste hoy → celebra
   if (todayKm > 0) return { state: "celebrar", message: `¡Hoy ya corriste ${todayKm.toFixed(1)} km! Eso se celebra.` };
+
+  // 1b. Hiciste fuerza hoy (registrada en Strava) → también se celebra
+  const strengthMin = strengths.filter((a) => dateOf(a) === today).reduce((s, a) => s + strengthMinutes(a), 0);
+  if (strengthMin > 0) return { state: "celebrar", message: `¡Fuerza hecha hoy (${strengthMin} min)! Eso se celebra.` };
 
   // 2. Hay plan en uso y hoy no toca salir → descansa
   if (next && !todaySession) {
@@ -107,6 +111,7 @@ const ALL: AnimName[] = ["idle", "celebrar", "dormir", "cansado", "saltar", "cor
 export function Mascot({
   today,
   runs,
+  strengths,
   sessions,
   weeklyGoalKm,
   busy,
@@ -114,12 +119,13 @@ export function Mascot({
 }: {
   today: string;
   runs: Activity[];
+  strengths: Activity[];
   sessions: Session[];
   weeklyGoalKm: number;
   busy: boolean;
   running: RunningNow;
 }) {
-  const base = decide(today, runs, sessions, weeklyGoalKm);
+  const base = decide(today, runs, strengths, sessions, weeklyGoalKm);
   const [jumping, setJumping] = useState(false);
   const [reduce, setReduce] = useState(false);
 

@@ -4,6 +4,13 @@ const RUN_TYPES = new Set(["Run", "TrailRun", "VirtualRun"]);
 export const TZ = "America/Mexico_City";
 
 export const isRun = (a: Activity) => RUN_TYPES.has(a.sport_type);
+
+// Fuerza en Strava: "Entrenamiento con pesas" (WeightTraining) y "Entrenamiento" general (Workout).
+const STRENGTH_TYPES = new Set(["WeightTraining", "Workout"]);
+export const isStrengthActivity = (a: Activity) => STRENGTH_TYPES.has(a.sport_type);
+
+// Minutos de una actividad de fuerza (tiempo en movimiento o, si no hay, el total).
+export const strengthMinutes = (a: Activity) => Math.max(1, Math.round((a.moving_time || a.elapsed_time) / 60));
 export const km = (m: number) => m / 1000;
 
 /* ---------- formato ---------- */

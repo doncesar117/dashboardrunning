@@ -18,6 +18,7 @@ import {
   parseTime,
   predictions,
   shoeStats,
+  strengthMinutes,
   summary,
   unassignedRuns,
   weeklyKm,
@@ -53,6 +54,7 @@ export type DashboardProps = {
   today: string;
   updated: string;
   runs: Activity[];
+  strengths?: Activity[]; // entrenamientos con pesas de Strava
   shoes: Shoe[] | null;
   config: { weeklyGoalKm: number; shoeLifeKm: number; shoeLifeOverrides: Record<string, number> };
   goal?: Goal;
@@ -137,7 +139,7 @@ function RunRow({ run, shoeName }: { run: Activity; shoeName?: string }) {
 
 /* ---------- Inicio ---------- */
 
-type Ctx = DashboardProps & { goTo: (t: TabId) => void; busy: boolean; running: RunningNow };
+type Ctx = Omit<DashboardProps, "strengths"> & { strengths: Activity[]; goTo: (t: TabId) => void; busy: boolean; running: RunningNow };
 
 function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Activity[] }) {
   const days = goal.date ? daysBetween(today, goal.date) : -1;
@@ -179,7 +181,7 @@ function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Acti
   );
 }
 
-function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, running, push }: Ctx) {
+function InicioPanel({ today, runs, strengths, shoes, config, goal, sessions, goTo, busy, running, push }: Ctx) {
   const sum = summary(runs, today);
   const upcoming = sessions.filter((s) => s.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const next = upcoming[0];
@@ -193,6 +195,8 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
   const dayKm = dayRuns.reduce((s, r) => s + km(r.distance), 0);
   const dayTime = dayRuns.reduce((s, r) => s + r.moving_time, 0);
   const dayPlan = sessions.find((s) => s.date === selDay);
+  const dayStrength = strengths.filter((a) => dateOf(a) === selDay);
+  const strengthToday = strengths.filter((a) => dateOf(a) === today);
 
   const recent = [...runs].sort(sortDesc).slice(0, 8);
   const visible = moreRuns ? recent : recent.slice(0, 3);
@@ -200,7 +204,7 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
 
   return (
     <>
-      <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} busy={busy} running={running} />
+      <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} strengths={strengths} busy={busy} running={running} />
 
       <section className="card hero">
         <Ring value={sum.weekKm} goal={config.weeklyGoalKm} />
@@ -228,7 +232,7 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
             </div>
             {next.shoe && !isStrength(next) && <div className="meta">👟 {next.shoe}</div>}
             <VideoButtons links={sessionLinks(next)} className="vlinks main" />
-            {push && next.date === today && isStrength(next) && <StrengthDone />}
+            {next.date === today && isStrength(next) && (strengthToday.length > 0 ? <span className="badge">✓ Fuerza registrada en Strava: {strengthToday.reduce((sum, a) => sum + strengthMinutes(a), 0)} min</span> : push ? <StrengthDone /> : null)}
             <button type="button" className="more tap" onClick={() => goTo("plan")}>
               Ver plan completo
             </button>
@@ -274,7 +278,10 @@ function InicioPanel({ today, runs, shoes, config, goal, sessions, goTo, busy, r
               ? `Plan: ${dayPlan.title ?? dayPlan.type ?? "Entrenamiento"}`
               : selDay > today
                 ? "Sin plan"
-                : "Sin salida"}
+                : dayStrength.length > 0
+                  ? ""
+                  : "Sin salida"}
+          {dayStrength.length > 0 && `${dayRuns.length > 0 || dayPlan ? " · " : ""}💪 Fuerza ${dayStrength.reduce((sum, a) => sum + strengthMinutes(a), 0)} min`}
         </p>
       </section>
 
@@ -320,12 +327,15 @@ function VideoButtons({ links, className = "vlinks" }: { links: ReturnType<typeo
   );
 }
 
-function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; open: boolean; onToggle: () => void; runs: Activity[]; shoes: Shoe[] | null; past: boolean }) {
+function SessionItem({ s, open, onToggle, runs, strengths, shoes, past }: { s: Session; open: boolean; onToggle: () => void; runs: Activity[]; strengths: Activity[]; shoes: Shoe[] | null; past: boolean }) {
   const strength = isStrength(s);
   const links = sessionLinks(s);
   const notes = notesText(s);
   const direct = strength && links.length === 1; // un solo video: tocar la sesión abre YouTube
   const done = strength ? [] : runs.filter((r) => dateOf(r) === s.date);
+  const sDone = strength ? strengths.filter((a) => dateOf(a) === s.date) : [];
+  const sMin = sDone.reduce((sum, a) => sum + strengthMinutes(a), 0);
+  const sHr = sDone.find((a) => a.average_heartrate)?.average_heartrate;
   const d = done.reduce((sum, r) => sum + km(r.distance), 0);
   const t = done.reduce((sum, r) => sum + r.moving_time, 0);
   const usedShoes = Array.from(new Set(done.map((r) => shoes?.find((x) => x.id === r.gear_id)?.name).filter((x): x is string => !!x)));
@@ -342,7 +352,11 @@ function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; ope
           <span className="badge">
             Hecho: {d.toFixed(1)} km · {fmtPace(t / d)} /km
           </span>
-        ) : past && !strength ? (
+        ) : sDone.length > 0 ? (
+          <span className="badge">
+            ✓ Hecho: {sMin} min{sHr ? ` · ${Math.round(sHr)} lpm` : ""}
+          </span>
+        ) : past ? (
           <span className="badge soft">Sin registro</span>
         ) : null}
       </div>
@@ -383,6 +397,7 @@ function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; ope
               Plan {s.distance_km} km → real {d.toFixed(1)} km
             </div>
           ) : null}
+          {sDone.length > 0 && <div>💪 En Strava: {sDone.map((a) => a.name).join(", ")}</div>}
           {notes && <div className="notes">{notes}</div>}
           <VideoButtons links={links} />
         </div>
@@ -391,7 +406,7 @@ function SessionItem({ s, open, onToggle, runs, shoes, past }: { s: Session; ope
   );
 }
 
-function PlanPanel({ today, runs, shoes, goal, sessions }: Ctx) {
+function PlanPanel({ today, runs, strengths, shoes, goal, sessions }: Ctx) {
   const sorted = [...sessions].sort((a, b) => a.date.localeCompare(b.date));
   const upcoming = sorted.filter((s) => s.date >= today);
   const past = sorted.filter((s) => s.date < today && s.date >= addDays(today, -14)).reverse();
@@ -429,7 +444,7 @@ function PlanPanel({ today, runs, shoes, goal, sessions }: Ctx) {
         ) : (
           <div className="list">
             {upcoming.map((s) => (
-              <SessionItem key={keyOf(s)} s={s} open={openKey === keyOf(s)} onToggle={() => toggle(keyOf(s))} runs={runs} shoes={shoes} past={false} />
+              <SessionItem key={keyOf(s)} s={s} open={openKey === keyOf(s)} onToggle={() => toggle(keyOf(s))} runs={runs} strengths={strengths} shoes={shoes} past={false} />
             ))}
           </div>
         )}
@@ -442,7 +457,7 @@ function PlanPanel({ today, runs, shoes, goal, sessions }: Ctx) {
             <Expandable open={showPast}>
               <div className="list" style={{ paddingTop: 10 }}>
                 {past.map((s) => (
-                  <SessionItem key={keyOf(s)} s={s} open={openKey === keyOf(s)} onToggle={() => toggle(keyOf(s))} runs={runs} shoes={shoes} past />
+                  <SessionItem key={keyOf(s)} s={s} open={openKey === keyOf(s)} onToggle={() => toggle(keyOf(s))} runs={runs} strengths={strengths} shoes={shoes} past />
                 ))}
               </div>
             </Expandable>
@@ -755,7 +770,7 @@ export function Dashboard(props: DashboardProps) {
     setTimeout(() => setCooling(false), 15000);
   };
 
-  const ctx: Ctx = { ...props, goTo, busy: pending, running };
+  const ctx: Ctx = { ...props, strengths: props.strengths ?? [], goTo, busy: pending, running };
   const current = TABS.find((t) => t.id === tab) ?? TABS[0];
   const panels: Record<TabId, ReactNode> = {
     inicio: <InicioPanel {...ctx} />,

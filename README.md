@@ -63,6 +63,7 @@ Una sesión cuyo `type` (o `title`) diga fuerza, core, gym, pesas, movilidad, et
 - Con **varios** videos, usa `"videos": [{ "title": "Core 10 min", "url": "https://..." }, "https://..."]`; la sesión se expande con un botón por video.
 - El enlace puede ir en `url`, `link`, `video` o `youtube`, o simplemente escrito dentro de `notes` (se convierte en botón). Solo se aceptan direcciones `http` o `https`.
 - `duration_min` es opcional y se muestra como "25 min".
+- **Fuerza hecha**: si grabas la fuerza en Strava como "Entrenamiento con pesas" (o "Entrenamiento"), la app la detecta sola: la sesión del plan dice "✓ Hecho: 22 min · 118 lpm", Inicio lo muestra en "Siguiente entrenamiento" y en el detalle del día, la mascota celebra y el aviso de las 6 PM ya no llega. La fuerza no suma a los kilómetros ni a las gráficas de ritmo. Una sesión de fuerza pasada sin actividad en Strava dice "Sin registro".
 
 ## Cómo se calculan algunas cosas
 - **Tiempos esperados**: fórmula de Riegel (exponente 1.06) sobre tu mejor esfuerzo de 5 a 25 km en los últimos 90 días. Es una estimación propia, no un dato de Strava.
@@ -101,7 +102,7 @@ El estado se guarda en el navegador de ese dispositivo (no se comparte entre tu 
 ## Avisos en el teléfono (opcional)
 La app puede mandarte una notificación:
 - **5:30 AM**: si el plan de hoy es de correr y todavía no hay salida de hoy en Strava (incluye el tenis del plan).
-- **6:00 PM**: si hoy toca fuerza y no tocaste **Ya la hice** (botón en "Siguiente entrenamiento"). Si la sesión tiene video, al tocar el aviso se abre YouTube.
+- **6:00 PM**: si hoy toca fuerza y no hay una fuerza de hoy en Strava ni tocaste **Ya la hice** (botón de respaldo en "Siguiente entrenamiento"). Si la sesión tiene video, al tocar el aviso se abre YouTube.
 
 Cómo funciona: la campana 🔔 de arriba activa los avisos en ese dispositivo; un servicio de tareas programadas llama a `/api/notify` a las 5:30 y a las 18:00. En iPhone hace falta iOS 16.4 o más nuevo y abrir la app desde la pantalla de inicio.
 
