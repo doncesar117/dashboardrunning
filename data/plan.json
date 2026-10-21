@@ -1,10 +1,5 @@
 {
-  "goal": {
-    "name": "Medio maratón Tuxtla Gutiérrez",
-    "date": "2026-11-21",
-    "distance_km": 21.0975,
-    "target_time": "1:59:59"
-  },
+  "goal": {},
   "sessions": [
     {
       "date": "2026-10-18",
@@ -30,8 +25,9 @@
       "date": "2026-10-21",
       "type": "Fuerza",
       "title": "Fuerza: piernas, rodillas e isquios",
-      "expected_time": "0:20:00",
-      "notes": "Video: Caroline Girvan, piernas amigable con rodillas con mancuernas (~20 min) https://www.youtube.com/watch?v=qdYGi4XsoE8. 2×10 con peso ligero-moderado, sin llegar al fallo; si hay molestia en isquios, baja la carga."
+      "duration_min": 20,
+      "url": "https://www.youtube.com/watch?v=qdYGi4XsoE8",
+      "notes": "Caroline Girvan, piernas amigable con rodillas con mancuernas. 2×10 con peso ligero-moderado, sin llegar al fallo; si hay molestia en isquios, baja la carga."
     },
     {
       "date": "2026-10-22",
@@ -47,8 +43,83 @@
       "date": "2026-10-23",
       "type": "Fuerza",
       "title": "Fuerza ligera: isquios con banda",
-      "expected_time": "0:27:00",
-      "notes": "Video: Total Body Training, isquios con banda (~15 min) https://www.youtube.com/watch?v=TfX_q6KK97Q. Opcional al final, rodillas (OptimaSport) https://www.youtube.com/watch?v=9vxCk6awnMw. 2×10, sin llegar al fallo."
+      "duration_min": 27,
+      "videos": [
+        {
+          "title": "Isquios con banda (Total Body Training, ~15 min)",
+          "url": "https://www.youtube.com/watch?v=TfX_q6KK97Q"
+        },
+        {
+          "title": "Rodillas para corredores (OptimaSport, opcional)",
+          "url": "https://www.youtube.com/watch?v=9vxCk6awnMw"
+        }
+      ],
+      "notes": "2×10, sin llegar al fallo. Los videos de rodilla son opcionales al final."
+    },
+    {
+      "date": "2026-10-25",
+      "type": "Tirada larga",
+      "title": "Larga 10 km",
+      "distance_km": 10,
+      "pace_target": "7:30",
+      "expected_time": "1:15:00",
+      "shoe": "ASICS Nimbus 27",
+      "notes": "Ritmo fácil de 7:15 a 7:45/km (1:12:30 a 1:17:30). Los primeros 3 km claramente lentos y sin acelerar al final. Techo de FC de ~150-155 lpm."
+    },
+    {
+      "date": "2026-10-27",
+      "type": "Rodaje",
+      "title": "Rodaje suave 4 km",
+      "distance_km": 4,
+      "pace_target": "7:30",
+      "expected_time": "0:30:00",
+      "shoe": "Adidas Evo SL",
+      "notes": "Semana de descarga: ritmo fácil de 7:15 a 7:45/km y FC por debajo de ~150-155 lpm."
+    },
+    {
+      "date": "2026-10-28",
+      "type": "Fuerza",
+      "title": "Fuerza para corredores (descarga)",
+      "duration_min": 22,
+      "url": "https://www.youtube.com/watch?v=XtUx2bqKk-Q",
+      "notes": "London Fitness Guy, fuerza para corredores con mancuernas (21:44). 2×10 con peso ligero-moderado, sin llegar al fallo."
+    },
+    {
+      "date": "2026-10-29",
+      "type": "Rodaje + progresiones",
+      "title": "Rodaje suave 3 km + 4×20\" progresiones",
+      "distance_km": 3,
+      "pace_target": "7:30",
+      "expected_time": "0:22:30",
+      "shoe": "Adidas Evo SL",
+      "notes": "Progresiones suaves de unos 20 s hasta ritmo de 5K, caminando 40 s entre cada una."
+    },
+    {
+      "date": "2026-10-30",
+      "type": "Fuerza",
+      "title": "Fuerza ligera: isquios con banda",
+      "duration_min": 27,
+      "videos": [
+        {
+          "title": "Isquios con banda (Total Body Training, ~15 min)",
+          "url": "https://www.youtube.com/watch?v=TfX_q6KK97Q"
+        },
+        {
+          "title": "Fortalecer rodillas para correr (Runner's World España, opcional)",
+          "url": "https://www.youtube.com/watch?v=AWj0pE16-6Y"
+        }
+      ],
+      "notes": "2×10, sin llegar al fallo."
+    },
+    {
+      "date": "2026-11-01",
+      "type": "Tirada larga",
+      "title": "Larga 8 km",
+      "distance_km": 8,
+      "pace_target": "7:30",
+      "expected_time": "1:00:00",
+      "shoe": "ASICS Nimbus 27",
+      "notes": "Cierre de la semana de descarga: ritmo fácil de 7:15 a 7:45/km, sin acelerar al final."
     }
   ]
 }
