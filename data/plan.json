@@ -92,7 +92,7 @@
       "pace_target": "7:30",
       "expected_time": "0:22:30",
       "shoe": "Adidas Evo SL",
-      "notes": "Progresiones suaves de unos 20 s hasta ritmo de 5K, caminando 40 s entre cada una."
+      "notes": "Progresiones suaves de ~20 s a ~85 % de esfuerzo (5:15-5:30/km), caminando 40 s entre cada una. Si la rodilla izquierda se hace notar, sáltalas."
     },
     {
       "date": "2026-10-30",
@@ -120,6 +120,70 @@
       "expected_time": "1:00:00",
       "shoe": "ASICS Nimbus 27",
       "notes": "Cierre de la semana de descarga: ritmo fácil de 7:15 a 7:45/km, sin acelerar al final."
+    },
+    {
+      "date": "2026-11-03",
+      "type": "Rodaje",
+      "title": "Rodaje suave 4 km (prueba de Boston)",
+      "distance_km": 4,
+      "pace_target": "7:30",
+      "expected_time": "0:30:00",
+      "shoe": "Adidas Adizero Boston 13",
+      "notes": "Prueba de los Boston con cordones y lengüeta flojos en el empeine. Ritmo fácil de 7:15 a 7:45/km. Si el pie molesta en los primeros kilómetros, termina caminando o cámbiate de tenis."
+    },
+    {
+      "date": "2026-11-04",
+      "type": "Fuerza",
+      "title": "Fuerza: piernas, rodillas e isquios",
+      "duration_min": 30,
+      "videos": [
+        {
+          "title": "Piernas amigable con rodillas (Caroline Girvan, ~20 min)",
+          "url": "https://www.youtube.com/watch?v=qdYGi4XsoE8"
+        },
+        {
+          "title": "Isquios con mancuernas (nourishmovelove, 10 min, opcional)",
+          "url": "https://www.youtube.com/watch?v=5_msWXL5xTc"
+        }
+      ],
+      "notes": "3×8 con carga moderada, sin llegar al fallo; si hay molestia en isquios, baja la carga."
+    },
+    {
+      "date": "2026-11-05",
+      "type": "Rodaje + progresiones",
+      "title": "Rodaje suave 5 km + 4×20\" progresiones",
+      "distance_km": 5,
+      "pace_target": "7:30",
+      "expected_time": "0:37:30",
+      "shoe": "Adidas Evo SL",
+      "notes": "Progresiones suaves de ~20 s a ~85 % de esfuerzo (5:15-5:30/km), caminando 40 s entre cada una. Si la rodilla izquierda se hace notar, sáltalas."
+    },
+    {
+      "date": "2026-11-06",
+      "type": "Fuerza",
+      "title": "Fuerza ligera: isquios con banda",
+      "duration_min": 27,
+      "videos": [
+        {
+          "title": "Isquios con banda (Total Body Training, ~15 min)",
+          "url": "https://www.youtube.com/watch?v=TfX_q6KK97Q"
+        },
+        {
+          "title": "Rodillas para corredores (OptimaSport, opcional)",
+          "url": "https://www.youtube.com/watch?v=9vxCk6awnMw"
+        }
+      ],
+      "notes": "3×8, sin llegar al fallo. Los videos de rodilla son opcionales al final."
+    },
+    {
+      "date": "2026-11-08",
+      "type": "Tirada larga",
+      "title": "Larga 10 km",
+      "distance_km": 10,
+      "pace_target": "7:30",
+      "expected_time": "1:15:00",
+      "shoe": "ASICS Nimbus 27",
+      "notes": "Ritmo fácil de 7:15 a 7:45/km (1:12:30 a 1:17:30). Primeros 3 km claramente lentos y sin acelerar al final. Techo de FC de ~150-155 lpm."
     }
   ]
 }
