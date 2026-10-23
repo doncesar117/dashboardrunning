@@ -28,6 +28,8 @@ import { Chevron, Collapsible, Expandable } from "./Expandable";
 import { IconHome, IconPlan, IconPlay, IconProgress, IconRefresh, IconShoe } from "./Icons";
 import { isStrength, linkLabel, notesText, sessionLinks, type LinkFields } from "@/lib/sessions";
 import { Mascot } from "./Mascot";
+import { RecoveryCard } from "./Recovery";
+import type { Recovery } from "@/lib/recovery";
 import { Notifications } from "./Notifications";
 import { StrengthDone } from "./StrengthDone";
 import { Ring } from "./Ring";
@@ -60,6 +62,7 @@ export type DashboardProps = {
   goal?: Goal;
   sessions: Session[];
   push?: { publicKey: string } | null; // avisos activos (llaves y base de datos listas)
+  recovery?: Recovery | null; // VFC, sueño y pulso en reposo de Garmin (si está conectado)
 };
 
 const TABS = [
@@ -181,7 +184,7 @@ function GoalCard({ goal, today, runs }: { goal: Goal; today: string; runs: Acti
   );
 }
 
-function InicioPanel({ today, runs, strengths, shoes, config, goal, sessions, goTo, busy, running, push }: Ctx) {
+function InicioPanel({ today, runs, strengths, shoes, config, goal, sessions, goTo, busy, running, push, recovery }: Ctx) {
   const sum = summary(runs, today);
   const upcoming = sessions.filter((s) => s.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const next = upcoming[0];
@@ -205,6 +208,8 @@ function InicioPanel({ today, runs, strengths, shoes, config, goal, sessions, go
   return (
     <>
       <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} strengths={strengths} busy={busy} running={running} />
+
+      {recovery && <RecoveryCard r={recovery} />}
 
       <section className="card hero">
         <Ring value={sum.weekKm} goal={config.weeklyGoalKm} />

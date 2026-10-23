@@ -4,6 +4,7 @@ import plan from "@/data/plan.json";
 import { getRecentActivities, getShoes, StravaError, type Activity, type Shoe } from "@/lib/strava";
 import { isRun, isStrengthActivity, todayLocal } from "@/lib/stats";
 import { storeReady } from "@/lib/store";
+import { getRecovery } from "@/lib/garmin";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +52,8 @@ export default async function Home() {
     );
   }
 
+  const recovery = await getRecovery();
+
   const updated = new Intl.DateTimeFormat("es-MX", {
     hour: "2-digit",
     minute: "2-digit",
@@ -69,6 +72,7 @@ export default async function Home() {
       config={config}
       goal={plan.goal as Goal | undefined}
       sessions={plan.sessions as Session[]}
+      recovery={recovery}
       push={process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY && process.env.CRON_SECRET && storeReady() ? { publicKey: process.env.VAPID_PUBLIC_KEY } : null}
     />
   );
