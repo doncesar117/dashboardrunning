@@ -23,11 +23,13 @@ export const HRV_RED = 36;
 // Subida del pulso en reposo (latidos) frente a tu base reciente que pide frenar.
 export const RHR_ALERT = 5;
 
-export function judge(r: Pick<Recovery, "hrv" | "hrvLow" | "restingHr" | "restingHrBase">): Pick<Recovery, "light" | "headline" | "detail"> {
+export function judge(r: Pick<Recovery, "hrv" | "hrvLow" | "hrvStatus" | "restingHr" | "restingHrBase">): Pick<Recovery, "light" | "headline" | "detail"> {
   const rhrUp = r.restingHr != null && r.restingHrBase != null ? r.restingHr - r.restingHrBase : 0;
   if (r.hrv == null) return { light: "amarillo", headline: "Sin VFC de anoche", detail: "Garmin aún no sube el dato. Guíate por cómo te sientes." };
   if (rhrUp >= RHR_ALERT) return { light: "rojo", headline: "Descansa hoy", detail: `Tu pulso en reposo subió ${Math.round(rhrUp)} latidos. Mejor camina o descansa.` };
   if (r.hrv < HRV_RED) return { light: "rojo", headline: "Recuperación baja", detail: "Reduce a 6 km fáciles o descansa. Que la rodilla y el sueño decidan." };
   if (r.hrvLow != null && r.hrv < r.hrvLow) return { light: "amarillo", headline: "Con cuidado", detail: "Sigue el plan, pero baja ~20% el volumen y mantén todo fácil." };
+  // Anoche estás en rango, pero Garmin (que mira el promedio de varias noches) aún no te ve equilibrado.
+  if (r.hrvStatus != null && r.hrvStatus !== "BALANCED") return { light: "amarillo", headline: "Casi listo", detail: "Anoche la VFC estuvo bien, pero tu promedio semanal aún no se equilibra. Sigue el plan, todo fácil." };
   return { light: "verde", headline: "Luz verde", detail: "Estás recuperado: sigue el plan como está." };
 }
