@@ -117,3 +117,6 @@ Configuración (una sola vez):
 5. Prueba: abre `https://TU-DOMINIO/api/notify?test=1&key=TU_CRON_SECRET` y debe llegar un aviso. Con `&dry=1&slot=am` (o `pm`) ves qué enviaría sin mandar nada.
 
 Mientras falte alguna de estas piezas, la campana y el botón no aparecen y todo lo demás funciona igual.
+
+## Tarjeta de recuperación (Garmin)
+Muestra VFC, sueño, pulso en reposo y Body Battery de la API personal de Garmin (`GARMIN_PERSONAL_API_KEY` en Vercel). Arriba dice de qué día es el dato: "Datos de hoy" o "Último dato: lun 26 oct · aún no hay de hoy (sincroniza tu reloj)", más la hora de la consulta. Garmin solo tiene la VFC y el sueño de hoy después de que el reloj sincroniza con Garmin Connect. El botón de actualizar también refresca esta tarjeta (la app conserva la respuesta solo 1 minuto). Si Garmin rechaza la llave, la tarjeta se oculta.

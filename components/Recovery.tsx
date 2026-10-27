@@ -1,4 +1,5 @@
 import type { Recovery } from "@/lib/recovery";
+import { fmtDateShort } from "@/lib/stats";
 
 const LABEL = { verde: "🟢", amarillo: "🟡", rojo: "🔴" } as const;
 const STATUS: Record<string, string> = { BALANCED: "Equilibrada", UNBALANCED: "Desequilibrada", LOW: "Baja", POOR: "Mala" };
@@ -8,7 +9,7 @@ function fmtH(h: number) {
   return `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")} min`;
 }
 
-export function RecoveryCard({ r }: { r: Recovery }) {
+export function RecoveryCard({ r, today }: { r: Recovery; today: string }) {
   const rhrDiff = r.restingHr != null && r.restingHrBase != null ? Math.round(r.restingHr - r.restingHrBase) : null;
   return (
     <section className={`card rec ${r.light}`}>
@@ -17,6 +18,10 @@ export function RecoveryCard({ r }: { r: Recovery }) {
         <span className="muted" style={{ fontSize: 12 }}>
           Garmin
         </span>
+      </div>
+      <div className="muted rec-when">
+        {r.date === today ? "Datos de hoy" : `Último dato: ${fmtDateShort(r.date)} · aún no hay de hoy (sincroniza tu reloj)`}
+        {r.fetchedAt ? ` · consultado ${r.fetchedAt}` : ""}
       </div>
       <div className="rec-head">
         <span className="rec-dot" aria-hidden="true">

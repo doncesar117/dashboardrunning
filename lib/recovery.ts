@@ -13,6 +13,7 @@ export type Recovery = {
   sleepHours: number | null;
   sleepScore: number | null;
   bodyBattery: number | null;
+  fetchedAt?: string; // hora (Ciudad de México) en que se consultó Garmin
   light: Light;
   headline: string;
   detail: string;

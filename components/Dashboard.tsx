@@ -209,7 +209,7 @@ function InicioPanel({ today, runs, strengths, shoes, config, goal, sessions, go
     <>
       <Mascot today={today} runs={runs} sessions={sessions} weeklyGoalKm={config.weeklyGoalKm} strengths={strengths} busy={busy} running={running} />
 
-      {recovery && <RecoveryCard r={recovery} />}
+      {recovery && <RecoveryCard r={recovery} today={today} />}
 
       <section className="card hero">
         <Ring value={sum.weekKm} goal={config.weeklyGoalKm} />

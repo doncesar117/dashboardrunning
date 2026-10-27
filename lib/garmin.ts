@@ -56,7 +56,19 @@ const num = (v: unknown): number | null => (typeof v === "number" && Number.isFi
 const arr = (v: unknown): Obj[] => (Array.isArray(v) ? (v as Obj[]) : []);
 
 let memo: { at: number; data: Recovery | null } | null = null;
-const TTL_MS = 10 * 60 * 1000;
+const TTL_MS = 60 * 1000; // copia corta: el botón de actualizar también la borra
+
+export function clearRecoveryCache() {
+  memo = null;
+}
+
+// Pide hasta mañana para que Garmin incluya el día de hoy aunque su fecha final no cuente; si lo rechaza, repite hasta hoy.
+async function getRanged(make: (end: string) => string, today: string) {
+  const first = await garminGet(make(addDays(today, 1)));
+  return first.ok ? first : garminGet(make(today));
+}
+
+const fetchedLabel = () => new Intl.DateTimeFormat("es-MX", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Mexico_City" }).format(new Date());
 
 /** Lee VFC, sueño, pulso en reposo y Body Battery. Devuelve null si Garmin no responde (la tarjeta se oculta). */
 export async function getRecovery(): Promise<Recovery | null> {
@@ -66,17 +78,22 @@ export async function getRecovery(): Promise<Recovery | null> {
     const today = todayLocal();
     const from8 = addDays(today, -7);
     const [hrvR, sleepR, dayR] = await Promise.all([
-      garminGet(`/hrv-service/hrv/daily/${from8}/${today}`),
-      garminGet(`/sleep-service/sleep/dailySleepSummariesByDate?startDate=${addDays(today, -2)}&endDate=${today}`),
+      getRanged((end) => `/hrv-service/hrv/daily/${from8}/${end}`, today),
+      getRanged((end) => `/sleep-service/sleep/dailySleepSummariesByDate?startDate=${addDays(today, -2)}&endDate=${end}`, today),
       garminGet(`/usersummary-service/v2/dailysummaries?startDate=${from8}&endDate=${today}`),
     ]);
 
-    const hrvs = arr((hrvR.body as Obj)?.hrvSummaries).sort((a, b) => String(a.calendarDate).localeCompare(String(b.calendarDate)));
-    const lastHrv = hrvs[hrvs.length - 1];
+    const hrvs = arr((hrvR.body as Obj)?.hrvSummaries)
+      .filter((h) => String(h.calendarDate) <= today)
+      .sort((a, b) => String(a.calendarDate).localeCompare(String(b.calendarDate)));
+    // El más reciente que ya traiga el promedio de anoche (el de hoy puede existir vacío mientras Garmin lo calcula).
+    const lastHrv = [...hrvs].reverse().find((h) => num(h.lastNightAvg) != null) ?? hrvs[hrvs.length - 1];
     const base = (lastHrv?.baseline ?? {}) as Obj;
 
-    const sleeps = arr(sleepR.body).sort((a, b) => String(a.calendarDate).localeCompare(String(b.calendarDate)));
-    const lastSleep = sleeps[sleeps.length - 1];
+    const sleeps = arr(sleepR.body)
+      .filter((s) => String(s.calendarDate) <= today)
+      .sort((a, b) => String(a.calendarDate).localeCompare(String(b.calendarDate)));
+    const lastSleep = [...sleeps].reverse().find((s) => num(s.sleepTimeSeconds) != null) ?? sleeps[sleeps.length - 1];
     const overall = ((lastSleep?.sleepScores ?? {}) as Obj).overall as Obj | undefined;
     const sleepSec = num(lastSleep?.sleepTimeSeconds);
 
@@ -99,6 +116,7 @@ export async function getRecovery(): Promise<Recovery | null> {
       sleepHours: sleepSec != null ? sleepSec / 3600 : null,
       sleepScore: num(overall?.value),
       bodyBattery: num(((lastDay?.bodyBattery ?? {}) as Obj).latestValue),
+      fetchedAt: fetchedLabel(),
     };
     const data: Recovery = { ...partial, ...judge(partial) };
     memo = { at: Date.now(), data };
