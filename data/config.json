@@ -1,5 +1,13 @@
 {
   "weeklyGoalKm": 40,
   "shoeLifeKm": 800,
-  "shoeLifeOverrides": {}
+  "shoeLifeOverrides": {},
+  "officialBests": [
+    {
+      "name": "5K",
+      "time": "0:24:58",
+      "date": "2025-10-25",
+      "event": "Day of the Dead, Under Armour (tiempo de chip)"
+    }
+  ]
 }

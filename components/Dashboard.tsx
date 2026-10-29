@@ -58,7 +58,7 @@ export type DashboardProps = {
   runs: Activity[];
   strengths?: Activity[]; // entrenamientos con pesas de Strava
   shoes: Shoe[] | null;
-  config: { weeklyGoalKm: number; shoeLifeKm: number; shoeLifeOverrides: Record<string, number> };
+  config: { weeklyGoalKm: number; shoeLifeKm: number; shoeLifeOverrides: Record<string, number>; officialBests?: { name: string; time: string; date: string; event?: string }[] };
   goal?: Goal;
   sessions: Session[];
   push?: { publicKey: string } | null; // avisos activos (llaves y base de datos listas)
@@ -634,6 +634,32 @@ function ProgresoPanel({ today, runs, config }: Ctx) {
           </tbody>
         </table>
         <p className="note">Últimos 180 días. Son salidas completas cuya distancia cae cerca de la marca (por ejemplo 20.5 a 22.8 km para el 21K), no parciales.</p>
+        {config.officialBests && config.officialBests.length > 0 && (
+          <>
+            <h3 style={{ margin: "16px 0 6px", fontSize: 14 }}>Marcas oficiales</h3>
+            <table>
+              <tbody>
+                {config.officialBests.map((o) => {
+                  const sec = parseTime(o.time);
+                  const dist = Number.parseFloat(o.name);
+                  return (
+                    <tr key={`${o.name}-${o.date}`}>
+                      <td>
+                        {o.name}
+                        <div className="muted" style={{ fontSize: 11 }}>
+                          {fmtDateShort(o.date)} {o.date.slice(0, 4)}
+                          {o.event ? ` · ${o.event}` : ""}
+                        </div>
+                      </td>
+                      <td>{sec ? <b>{fmtTime(sec)}</b> : o.time}</td>
+                      <td>{sec && dist > 0 ? `${fmtPace(sec / dist)} /km` : ""}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </>
+        )}
       </Collapsible>
     </>
   );
