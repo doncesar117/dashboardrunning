@@ -124,39 +124,35 @@
     {
       "date": "2026-11-03",
       "type": "Rodaje",
-      "title": "Rodaje suave 4 km (prueba de Boston)",
+      "title": "Rodaje suave 4 km",
       "distance_km": 4,
       "pace_target": "7:30",
       "expected_time": "0:30:00",
-      "shoe": "Adidas Adizero Boston 13",
-      "notes": "Prueba de los Boston con cordones y lengüeta flojos en el empeine. Ritmo fácil de 7:15 a 7:45/km. Si el pie molesta en los primeros kilómetros, termina caminando o cámbiate de tenis."
+      "shoe": "Adidas Evo SL",
+      "notes": "Muy fácil, 7:30 o más lento, pulso por debajo de 150. Después del 10K fuerte del domingo y con la gripe: sin acelerar. La prueba de los Boston se pospone."
     },
     {
       "date": "2026-11-04",
       "type": "Fuerza",
-      "title": "Fuerza: piernas, rodillas e isquios",
-      "duration_min": 30,
+      "title": "Fuerza ligera: piernas sin cargar isquios",
+      "duration_min": 20,
       "videos": [
         {
           "title": "Piernas amigable con rodillas (Caroline Girvan, ~20 min)",
           "url": "https://www.youtube.com/watch?v=qdYGi4XsoE8"
-        },
-        {
-          "title": "Isquios con mancuernas (nourishmovelove, 10 min, opcional)",
-          "url": "https://www.youtube.com/watch?v=5_msWXL5xTc"
         }
       ],
-      "notes": "3×8 con carga moderada, sin llegar al fallo; si hay molestia en isquios, baja la carga."
+      "notes": "2×10 con carga ligera, sin llegar al fallo. Si algo molesta en los isquios, sáltalo."
     },
     {
       "date": "2026-11-05",
-      "type": "Rodaje + progresiones",
-      "title": "Rodaje suave 5 km + 4×20\" progresiones",
+      "type": "Rodaje",
+      "title": "Rodaje suave 5 km",
       "distance_km": 5,
       "pace_target": "7:30",
       "expected_time": "0:37:30",
       "shoe": "Adidas Evo SL",
-      "notes": "Progresiones suaves de ~20 s a ~85 % de esfuerzo (5:15-5:30/km), caminando 40 s entre cada una. Si la rodilla izquierda se hace notar, sáltalas."
+      "notes": "Todo fácil, sin progresiones esta semana. Pulso por debajo de 150."
     },
     {
       "date": "2026-11-06",
