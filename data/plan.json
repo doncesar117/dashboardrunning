@@ -152,34 +152,24 @@
       "pace_target": "7:30",
       "expected_time": "0:37:30",
       "shoe": "Adidas Evo SL",
-      "notes": "Todo fácil, sin progresiones esta semana. Pulso por debajo de 150."
+      "notes": "Todo fácil, sin progresiones esta semana. Pulso por debajo de 150. Interrumpido a mitad por molestia en el isquio derecho (2-3 de 10 al correr)."
     },
     {
       "date": "2026-11-06",
       "type": "Fuerza",
-      "title": "Fuerza ligera: isquios con banda",
-      "duration_min": 27,
+      "title": "Tren superior y core (sin cargar isquios)",
+      "duration_min": 20,
       "videos": [
         {
-          "title": "Isquios con banda (Total Body Training, ~15 min)",
-          "url": "https://www.youtube.com/watch?v=TfX_q6KK97Q"
+          "title": "foodspring España: tren superior con mancuernas, 20 min",
+          "url": "https://www.youtube.com/watch?v=F5WXdVujdbA"
         },
         {
-          "title": "Rodillas para corredores (OptimaSport, opcional)",
-          "url": "https://www.youtube.com/watch?v=9vxCk6awnMw"
+          "title": "Jamie's Running: core para corredores, 15 min (opcional)",
+          "url": "https://www.youtube.com/watch?v=B6zHSWK5YRU"
         }
       ],
-      "notes": "3×8, sin llegar al fallo. Los videos de rodilla son opcionales al final."
-    },
-    {
-      "date": "2026-11-08",
-      "type": "Tirada larga",
-      "title": "Larga 10 km",
-      "distance_km": 10,
-      "pace_target": "7:30",
-      "expected_time": "1:15:00",
-      "shoe": "ASICS Nimbus 27",
-      "notes": "Ritmo fácil de 7:15 a 7:45/km (1:12:30 a 1:17:30). Primeros 3 km claramente lentos y sin acelerar al final. Techo de FC de ~150-155 lpm."
+      "notes": "Cambio por la molestia del isquio derecho: nada que cargue la parte trasera de la pierna. Peso moderado, sin llegar al fallo."
     }
   ]
 }
