@@ -153,23 +153,6 @@
       "expected_time": "0:37:30",
       "shoe": "Adidas Evo SL",
       "notes": "Todo fácil, sin progresiones esta semana. Pulso por debajo de 150. Interrumpido a mitad por molestia en el isquio derecho (2-3 de 10 al correr)."
-    },
-    {
-      "date": "2026-11-06",
-      "type": "Fuerza",
-      "title": "Tren superior y core (sin cargar isquios)",
-      "duration_min": 20,
-      "videos": [
-        {
-          "title": "foodspring España: tren superior con mancuernas, 20 min",
-          "url": "https://www.youtube.com/watch?v=F5WXdVujdbA"
-        },
-        {
-          "title": "Jamie's Running: core para corredores, 15 min (opcional)",
-          "url": "https://www.youtube.com/watch?v=B6zHSWK5YRU"
-        }
-      ],
-      "notes": "Cambio por la molestia del isquio derecho: nada que cargue la parte trasera de la pierna. Peso moderado, sin llegar al fallo."
     }
   ]
 }
