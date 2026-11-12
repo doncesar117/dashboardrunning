@@ -153,6 +153,45 @@
       "expected_time": "0:37:30",
       "shoe": "Adidas Evo SL",
       "notes": "Todo fácil, sin progresiones esta semana. Pulso por debajo de 150. Interrumpido a mitad por molestia en el isquio derecho (2-3 de 10 al correr)."
+    },
+    {
+      "date": "2026-11-12",
+      "type": "Rodaje",
+      "title": "Regreso: 20' alternando 1' trote / 2' caminata",
+      "distance_km": 3,
+      "pace_target": "7:30",
+      "expected_time": "0:20:00",
+      "shoe": "Adidas Evo SL",
+      "duration_min": 20,
+      "notes": "Primer trote tras la semana off. Muy fácil, pulso por debajo de 145, sin acelerar. Si algo molesta en los isquios, parar."
+    },
+    {
+      "date": "2026-11-13",
+      "type": "Fuerza",
+      "title": "Tren superior y core (sin cargar isquios)",
+      "duration_min": 20,
+      "videos": [
+        {
+          "title": "foodspring España: tren superior con mancuernas, 20 min",
+          "url": "https://www.youtube.com/watch?v=F5WXdVujdbA"
+        },
+        {
+          "title": "Jamie's Running: core para corredores, 15 min (opcional)",
+          "url": "https://www.youtube.com/watch?v=B6zHSWK5YRU"
+        }
+      ],
+      "notes": "Las piernas siguen sin carga. Peso moderado, sin llegar al fallo. El video de core es opcional."
+    },
+    {
+      "date": "2026-11-15",
+      "type": "Rodaje",
+      "title": "Repetir run-walk: 20' alternando 1' trote / 2' caminata",
+      "distance_km": 3,
+      "pace_target": "7:30",
+      "expected_time": "0:20:00",
+      "shoe": "Adidas Evo SL",
+      "duration_min": 20,
+      "notes": "Solo si el viernes y el sábado despiertas con molestia 0-1 en los isquios y sin dolor al caminar ni en escaleras. Si sube a 2 o más, no salir y ver al fisioterapeuta."
     }
   ]
 }
