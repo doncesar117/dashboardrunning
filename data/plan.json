@@ -192,6 +192,43 @@
       "shoe": "Adidas Evo SL",
       "duration_min": 20,
       "notes": "Solo si el viernes y el sábado despiertas con molestia 0-1 en los isquios y sin dolor al caminar ni en escaleras. Si sube a 2 o más, no salir y ver al fisioterapeuta."
+    },
+    {
+      "date": "2026-11-17",
+      "type": "Rodaje",
+      "title": "Rodaje suave 4 km",
+      "distance_km": 4,
+      "pace_target": "7:30",
+      "expected_time": "0:30:00",
+      "shoe": "Adidas Evo SL",
+      "notes": "Todo fácil, 7:30 o más lento, pulso por debajo de 145. Si sientes los isquios antes del km 4, termina ahí. Sin progresiones."
+    },
+    {
+      "date": "2026-11-18",
+      "type": "Fuerza",
+      "title": "Tren superior y core (sin cargar isquios)",
+      "duration_min": 20,
+      "videos": [
+        {
+          "title": "foodspring España: tren superior con mancuernas, 20 min",
+          "url": "https://www.youtube.com/watch?v=F5WXdVujdbA"
+        },
+        {
+          "title": "Jamie's Running: core para corredores, 15 min (opcional)",
+          "url": "https://www.youtube.com/watch?v=B6zHSWK5YRU"
+        }
+      ],
+      "notes": "Sin piernas hasta la cita con el fisioterapeuta. Peso moderado, sin llegar al fallo. El video de core es opcional."
+    },
+    {
+      "date": "2026-11-22",
+      "type": "Rodaje",
+      "title": "Rodaje suave 5 km",
+      "distance_km": 5,
+      "pace_target": "7:30",
+      "expected_time": "0:37:30",
+      "shoe": "ASICS Nimbus 27",
+      "notes": "Todo fácil, 7:30 o más lento. Máximo 5 km: si sientes los isquios antes del km 5, termina ahí. Solo si el martes y los días siguientes amanecen sin molestia."
     }
   ]
 }
