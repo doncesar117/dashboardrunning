@@ -5,6 +5,7 @@ import { getRecentActivities, getShoes, StravaError, type Activity, type Shoe } 
 import { isRun, isStrengthActivity, todayLocal } from "@/lib/stats";
 import { storeReady } from "@/lib/store";
 import { getRecovery } from "@/lib/garmin";
+import { getTodayDevotional } from "@/lib/devotional";
 
 export const dynamic = "force-dynamic";
 
@@ -73,6 +74,7 @@ export default async function Home() {
       goal={plan.goal as Goal | undefined}
       sessions={plan.sessions as Session[]}
       recovery={recovery}
+      devotional={getTodayDevotional(today)}
       push={process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY && process.env.CRON_SECRET && storeReady() ? { publicKey: process.env.VAPID_PUBLIC_KEY } : null}
     />
   );
