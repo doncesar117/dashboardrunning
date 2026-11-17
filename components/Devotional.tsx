@@ -6,7 +6,8 @@ export type Devotional = {
   title: string;
   verse: { text: string; ref: string };
   read: string;
-  steps: { title: string; minutes: number; body: string }[];
+  safety?: string;
+  steps: { title: string; minutes: number; body: string; exercise?: { reps: string; rest: string; breath: string } }[];
   closing?: string;
 };
 
@@ -33,6 +34,8 @@ export function DevotionalCard({ d }: { d: Devotional }) {
         <b>Lee en tu Biblia:</b> {d.read}
       </div>
 
+      {d.safety && <div className="devo-safety">{d.safety}</div>}
+
       <ol className="devo-steps">
         {d.steps.map((s) => (
           <li key={s.title}>
@@ -41,6 +44,19 @@ export function DevotionalCard({ d }: { d: Devotional }) {
               <span className="pill">{s.minutes} min</span>
             </div>
             <p>{s.body}</p>
+            {s.exercise && (
+              <div className="devo-ex">
+                <div>
+                  <b>Series:</b> {s.exercise.reps}
+                </div>
+                <div>
+                  <b>Descanso:</b> {s.exercise.rest}
+                </div>
+                <div>
+                  <b>Al respirar:</b> {s.exercise.breath}
+                </div>
+              </div>
+            )}
           </li>
         ))}
       </ol>
