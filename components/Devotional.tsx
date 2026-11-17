@@ -1,5 +1,6 @@
 export type Devotional = {
   date: string;
+  series?: string;
   day_label: string;
   theme: string;
   title: string;
@@ -14,7 +15,7 @@ export function DevotionalCard({ d }: { d: Devotional }) {
   return (
     <section className="card devo">
       <div className="chd">
-        <h2>Devocional de hoy</h2>
+        <h2>{d.series ?? "Devocional de hoy"}</h2>
         <span className="muted" style={{ fontSize: 12 }}>
           ~{total} min
         </span>
