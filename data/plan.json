@@ -1,5 +1,9 @@
 {
-  "goal": {},
+  "goal": {
+    "name": "15K New Balance",
+    "date": "2027-02-07",
+    "distance_km": 15
+  },
   "sessions": [
     {
       "date": "2026-10-18",
